@@ -12,7 +12,6 @@ const getSuggestions = value => {
   const inputLength = inputValue.length;
 
   return elasticSearch.findDocumentDetails(inputValue)
-
 };
 
 // When suggestion is clicked, Autosuggest needs to populate the input
@@ -23,14 +22,12 @@ const getSuggestionValue = suggestion => suggestion.name;
 // Use your imagination to render suggestions.
 const renderSuggestion = suggestion => {
 
-  let icon;
   return (
     <div>
       <div style={{ display: "inline-block" }}>
         <div>
           <span className="type" >{suggestion.index}</span>
         </div>
-
         <div>
           <span className="prop-name" >Match: {suggestion.propertyHit}</span>
         </div>
@@ -39,10 +36,8 @@ const renderSuggestion = suggestion => {
         {suggestion.name}
       </div>
     </div>
-
   )
 };
-
 
 class App extends Component {
 
@@ -60,7 +55,6 @@ class App extends Component {
   }
 
   onChange = (event, { newValue, method }) => {
-
     this.setState({
       value: newValue
     });
@@ -71,11 +65,10 @@ class App extends Component {
     let relations = elasticSearch.findRelations(suggestion.name);
 
     this.setState({
-      currentSearch: {id:suggestion.name,index:suggestion.index},
+      currentSearch: { id: suggestion.name, index: suggestion.index },
       details: details,
       relations: relations
     });
-
   }
 
 
@@ -87,8 +80,6 @@ class App extends Component {
         suggestions: results
       });
     })
-
-
   };
 
   // Autosuggest will call this function every time you need to clear suggestions.
@@ -109,12 +100,11 @@ class App extends Component {
 
       this.setState({
         value: relation.id,
-        currentSearch: {id:relation.id,index:relation.type},
+        currentSearch: { id: relation.id, index: relation.type },
         details: details,
         relations: relations
       });
     });
-
   }
 
   onBackPressed = () => {
@@ -127,7 +117,7 @@ class App extends Component {
 
       this.setState({
         value: lastSearch.id,
-        currentSearch: {id:lastSearch.id,index:lastSearch.index},
+        currentSearch: { id: lastSearch.id, index: lastSearch.index },
         details: details,
         relations: relations
       });
@@ -140,7 +130,7 @@ class App extends Component {
 
     // Autosuggest will pass through all these props to the input.
     const inputProps = {
-      placeholder: 'Type a programming language',
+      placeholder: 'søg',
       value,
       onChange: this.onChange
     };
@@ -172,15 +162,15 @@ class App extends Component {
             renderSuggestion={renderSuggestion}
             inputProps={inputProps}
           />
-          {this.history.length > 0 && <button onClick={this.onBackPressed}>Back</button>} 
-          <div style={{ textAlign: 'left', width: '20%', marginTop: '20px' }}>
+          {this.history.length > 0 && <button onClick={this.onBackPressed}>Back</button>}
+          {this.state.currentSearch.id && <div style={{ textAlign: 'left', width: '20%', marginTop: '20px' }}>
             <h5>Details</h5>
             {detailsElements}
-          </div>
-          <div style={{ textAlign: 'left', width: '20%', marginTop: '20px' }}>
+          </div>}
+          {this.state.currentSearch.id && <div style={{ textAlign: 'left', width: '20%', marginTop: '20px' }}>
             <h5>Relations</h5>
             {relationElements}
-          </div>
+          </div>}
           <a
             className="App-link"
             href="https://reactjs.org"
